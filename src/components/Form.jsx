@@ -47,6 +47,7 @@ function Form() {
             `${BASE_URL}?latitude=${lat}&longitude=${lng}`
           );
           const data = await res.json();
+
           if (!data.countryCode)
             throw new Error(
               "that does not seems to be a city. click somewhere else"
@@ -67,8 +68,9 @@ function Form() {
   );
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!cityName || !date) return;
 
+    if (!cityName || !date || !lat || !lng)
+      return alert("Please select a valid city on the map");
     const newCity = {
       cityName,
       country,
@@ -85,9 +87,7 @@ function Form() {
 
   if (isLoadingGeocoding) return <Spinner />;
 
-  if (geocodingError) {
-    <Message message={geocodingError} />;
-  }
+  if (geocodingError) return <Message message={geocodingError} />;
 
   return (
     <form
